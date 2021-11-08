@@ -1,0 +1,110 @@
+<?php 
+
+$dbHost = "localhost";
+$dbUser = "root";
+$dbPassword = "";
+$dbName = "contactme";
+
+try
+{
+  $dsn = "mysql:host=" . $dbHost . ";dbname=" . $dbName;
+  $pdo = new PDO($dsn, $dbUser, $dbPassword);
+}
+catch(PDOException $e)
+  {
+    echo "DB Connection Failed: " .$e->getMessage(); } $status = "";
+if($_SERVER['REQUEST_METHOD'] == 'POST') { $email = $_POST['email'];
+if(empty($email)) { $status = "Email address is required"; } else if
+(!filter_var($email, FILTER_VALIDATE_EMAIL)) { $status = "Please provide a valid
+e-mail address"; } else { $sql = "INSERT INTO contactinfo (email) VALUES
+(:email)"; $stmt = $pdo->prepare($sql); $stmt->execute(['email' => $email]);
+$status = ""; } } ?>
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <div class="wrapper">
+      <nav class="desktop-nav">
+        <div class="logo">
+          <img src="Task 1/logo_pineapple-1.svg" alt="" />
+        </div>
+
+        <ul class="menu-items">
+          <li>
+            <a href="#">About</a>
+          </li>
+
+          <li>
+            <a href="#">How it works</a>
+          </li>
+
+          <li>
+            <a href="#">Contact</a>
+          </li>
+        </ul>
+      </nav>
+
+      <!-- End of Desktop Navigation -->
+
+      <header class="hero-container">
+        <div class="right">
+          <img src="Task 1/image_summer-1.png" alt="" />
+        </div>
+
+        <div class="left">
+          <h1>Subscribe to newsletter</h1>
+          <p>
+            Subscribe to our newsletter and get 10% discount on pineapple
+            glasses.
+          </p>
+
+          <form id="form" action="" method="POST">
+            <input
+              type="text"
+              name="email"
+              id="email"
+              placeholder="Type your email address here..."
+              onkeydown="validation()"
+            /><span id="text"><?php echo $status ?></span>
+
+            <button type="submit" id="submit-btn"></button>
+
+            <input
+              type="checkbox"
+              id="check"
+              value="check"
+              onclick="checked()"
+            /><span id="sspan">I agree to terms of service</span>
+            <p id="tete"></p>
+          </form>
+
+          <div class="social">
+            <a href="#">
+              <img src="Task 1/ic_facebook-1.svg" alt="" />
+            </a>
+            <a href="#">
+              <img src="Task 1/ic instagram-1.svg" alt="" />
+            </a>
+            <a href="#">
+              <img src="Task 1/ic_twitter-1.svg" alt="" />
+            </a>
+            <a href="#">
+              <img src="Task 1/ic youtube-1.svg" alt="" />
+            </a>
+          </div>
+        </div>
+      </header>
+
+      <!-- End of Hero Section -->
+    </div>
+
+    <script src="main.js"></script>
+  </body>
+</html>
